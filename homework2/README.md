@@ -1,3 +1,5 @@
+# homework2
+```
 $ ./homework2.exe test/if.c
 score = 61;
 if (score < 60) {
@@ -105,3 +107,4 @@ goto L1
 t9 = 3
 pass = t9
 (L1)
+```
