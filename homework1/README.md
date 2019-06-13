@@ -1,3 +1,5 @@
+# homework1
+```
 $ ./exp0hack.exe '5-3*2+4/2'
 === EBNF Grammar =====
 E=F ([+-] F)*
@@ -56,3 +58,4 @@ D=M
 D=D+M
 @t8
 M=D
+```
