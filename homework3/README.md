@@ -86,71 +86,71 @@ token=}
 34:;
 35:}
 ============ parse =============
-@61     t0 = 61
-D=A
-@t0
-M=D
-@t0     score = t0
-D=M
-@score
-M=D
-@score  t1 = score
-D=M
-@t1
-M=D
-@60     t2 = 60
-D=A
-@t2
-M=D
-@t1     if not t1 < t2 goto L0
-D=M
-@t2
-D=D-M
-@L0
-D;JGE
-@1      t3 = 1
-D=A
-@t3
-M=D
-@t3     pass = t3
-D=M
-@pass
-M=D
-@L1     goto L1
-0;JMP
+0       @61     # t0 = 61
+1       D=A
+2       @t0
+3       M=D
+4       @t0     # score = t0
+5       D=M
+6       @score
+7       M=D
+8       @score  # t1 = score
+9       D=M
+10      @t1
+11      M=D
+12      @60     # t2 = 60
+13      D=A
+14      @t2
+15      M=D
+16      @t1     # if not t1 < t2 goto L0
+17      D=M
+18      @t2
+19      D=D-M
+20      @L0
+21      D;JGE
+22      @1      # t3 = 1
+23      D=A
+24      @t3
+25      M=D
+26      @t3     # pass = t3
+27      D=M
+28      @pass
+29      M=D
+30      @L1     # goto L1
+31      0;JMP
 (L0)
-@score  t4 = score
-D=M
-@t4
-M=D
-@80     t5 = 80
-D=A
-@t5
-M=D
-@t4     if not t4 < t5 goto L2
-D=M
-@t5
-D=D-M
-@L2
-D;JGE
-@2      t6 = 2
-D=A
-@t6
-M=D
-@t6     pass = t6
-D=M
-@pass
-M=D
-@L1     goto L1
-0;JMP
+32      @score  # t4 = score
+33      D=M
+34      @t4
+35      M=D
+36      @80     # t5 = 80
+37      D=A
+38      @t5
+39      M=D
+40      @t4     # if not t4 < t5 goto L2
+41      D=M
+42      @t5
+43      D=D-M
+44      @L2
+45      D;JGE
+46      @2      # t6 = 2
+47      D=A
+48      @t6
+49      M=D
+50      @t6     # pass = t6
+51      D=M
+52      @pass
+53      M=D
+54      @L1     # goto L1
+55      0;JMP
 (L2)
-@3      t7 = 3
-D=A
-@t7
-M=D
-@t7     pass = t7
-D=M
-@pass
-M=D
+56      @3      # t7 = 3
+57      D=A
+58      @t7
+59      M=D
+60      @t7     # pass = t7
+61      D=M
+62      @pass
+63      M=D
 (L1)
 ```

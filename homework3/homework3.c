@@ -10,7 +10,7 @@ void emitop(int, int, char *, int, int);
 void emitst(char *, int);
 void emitgoto(int);
 
-int tempIdx = 0, labelIdx = 0;
+int tempIdx = 0, labelIdx = 0, pcIdx = 0;
 /*char mm = "case";
 strstr(token,mm);*/
 
@@ -44,55 +44,54 @@ char *skip(char *set) {
 }
 
 void emitts(int f,char *item){
-  emit("@%s\tt%d = %s\n",item,f,item);
+  emit("%d\t@%s\t# t%d = %s\n",pcIdx++,item,f,item);
   if(isAlpha(item[0]))
   {
-    emit("D=M\n");
+    emit("%d\tD=M\n",pcIdx++);
   }
   else
   {
-    emit("D=A\n");
+    emit("%d\tD=A\n",pcIdx++);
   }
-  emit("@t%d\n",f);
-  emit("M=D\n");
+  emit("%d\t@t%d\n",pcIdx++,f);
+  emit("%d\tM=D\n",pcIdx++);
 }
 
 void emitst(char *id, int i){
-  emit("@t%d\t%s = t%d\n", i, id, i);
-  emit("D=M\n");
-  emit("@%s\n",id);
-  emit("M=D\n");
+  emit("%d\t@t%d\t# %s = t%d\n", pcIdx++, i, id, i);
+  emit("%d\tD=M\n", pcIdx++);
+  emit("%d\t@%s\n", pcIdx++, id);
+  emit("%d\tM=D\n", pcIdx++);
 }
 
 void emitop(int i, int i1, char *op, int i2, int jump){
   if(strcmp(op,"+")==0||strcmp(op,"-")==0||strcmp(op,"*")==0||strcmp(op,"/")==0) {
-    emit("@t%d\tt%d = t%d %s t%d\n", i1, i, i1, op, i2);
-    emit("D=M\n");
-    emit("@t%d\n",i2);
-    emit("D=D%sM\n",op);
-    emit("@t%d\n",i);
-    emit("M=D\n");
+    emit("%d\t@t%d\t# t%d = t%d %s t%d\n", pcIdx++, i1, i, i1, op, i2);
+    emit("%d\tD=M\n", pcIdx++);
+    emit("%d\t@t%d\n", pcIdx++, i2);
+    emit("%d\tD=D%sM\n", pcIdx++, op);
+    emit("%d\t@t%d\n", pcIdx++, i);
+    emit("%d\tM=D\n", pcIdx++);
   }
   else {
-    emit("@t%d\tif not t%d %s t%d goto L%d\n", i1, i1, op, i2, jump);
-    emit("D=M\n");
-    emit("@t%d\n",i2);
-    emit("D=D-M\n");
-    emit("@L%d\n",jump);
-    if(strcmp(op,"<")==0)  emit("D;JGE\n"); 
-    else if(strcmp(op,">")==0)  emit("D;JLE\n");       
-    else if(strcmp(op,"=")==0)  emit("D;JNE\n");       
-    else if(strcmp(op,"!=")==0)  emit("D;JEQ\n");
-    else if(strcmp(op,">=")==0)  emit("D;JLT\n");
-    else if(strcmp(op,"<=")==0)  emit("D;JGT\n");
+    emit("%d\t@t%d\t# if not t%d %s t%d goto L%d\n", pcIdx++, i1, i1, op, i2, jump);
+    emit("%d\tD=M\n", pcIdx++);
+    emit("%d\t@t%d\n", pcIdx++,i2);
+    emit("%d\tD=D-M\n", pcIdx++);
+    emit("%d\t@L%d\n", pcIdx++,jump);
+    if(strcmp(op,"<")==0)  emit("%d\tD;JGE\n", pcIdx++); 
+    else if(strcmp(op,">")==0)  emit("%d\tD;JLE\n", pcIdx++);       
+    else if(strcmp(op,"=")==0)  emit("%d\tD;JNE\n", pcIdx++);       
+    else if(strcmp(op,"!=")==0)  emit("%d\tD;JEQ\n", pcIdx++);
+    else if(strcmp(op,">=")==0)  emit("%d\tD;JLT\n", pcIdx++);
+    else if(strcmp(op,"<=")==0)  emit("%d\tD;JGT\n", pcIdx++);
   }
 }
 
 void emitgoto(int jump){
-  emit("@L%D\tgoto L%d\n",jump,jump);
-  emit("0;JMP\n");
+  emit("%d\t@L%D\t# goto L%d\n", pcIdx++, jump, jump);
+  emit("%d\t0;JMP\n", pcIdx++);
 }
-
 
 // F = (E) | Number | Id
 int F(int jump) {
